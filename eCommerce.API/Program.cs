@@ -21,6 +21,19 @@ builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile).Assembly);
 //FluentValidations
 builder.Services.AddFluentValidationAutoValidation();
 
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(options =>
+{
+  options.AddDefaultPolicy(builder =>
+  {
+    builder.WithOrigins("http://localhost:4200")
+      .AllowAnyHeader()
+      .AllowAnyMethod();
+  });
+});
 
 //Build the web application
 var app = builder.Build();
@@ -29,6 +42,11 @@ app.UseExceptionHandlingMiddleware();
 
 //Routing
 app.UseRouting();
+app.UseSwagger();
+
+app.UseSwaggerUI();
+
+app.UseCors();
 
 //Auth
 app.UseAuthentication();
